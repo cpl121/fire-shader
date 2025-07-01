@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber';
-import { CanvasLoader, CustomShader, GuiProvider } from '@/components';
+import { CanvasLoader, BonfireInstance, GuiProvider } from '@/components';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { Suspense } from 'react';
@@ -8,7 +8,7 @@ const Scene = () => {
   return (
     <GuiProvider>
       <Canvas
-        camera={{ position: [4, 2, 10], fov: 75 }}
+        camera={{ position: [0, 1, 3], fov: 50 }}
         shadows
         gl={{
           outputColorSpace: THREE.SRGBColorSpace,
@@ -19,20 +19,21 @@ const Scene = () => {
           shadowMapType: THREE.PCFSoftShadowMap,
         }}
       >
-        <color attach="background" args={['#0a0a0f']} />
-        <ambientLight intensity={3} color="#445566" />
-        <fog attach="fog" args={['#101520', 6, 15]} />
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[2, 2, 2]} intensity={1} />
+        {/* <fog attach="fog" args={['#101520', 6, 15]} /> */}
         <OrbitControls
-          enableDamping
+          enableDamping={false}
           enablePan={false}
-          minPolarAngle={Math.PI / 4}
-          maxPolarAngle={Math.PI / 2.05}
-          minDistance={7}
-          maxDistance={14}
+          enableZoom={false}
+          minPolarAngle={Math.PI / 3.5}
+          maxPolarAngle={Math.PI / 2}
+          minAzimuthAngle={-Math.PI / 4}
+          maxAzimuthAngle={Math.PI / 8}
         />
 
         <Suspense fallback={<CanvasLoader />} name={'Loader'}>
-          <CustomShader />
+          <BonfireInstance position={[0, -0.5, 0]} />
         </Suspense>
       </Canvas>
     </GuiProvider>

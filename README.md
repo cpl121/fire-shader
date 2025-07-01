@@ -1,77 +1,63 @@
-# Shader Template • Next.js 15 + Three.js 0.177
+# 🔥 Campfire Shader Scene (WebGL + Three.js)
 
-Minimal starter to build custom WebGL shaders with **React-Three-Fiber**, **Turbopack HMR** and zero-config GLSL loading.
+This project renders a stylized **campfire** using **custom GLSL shaders** for fire and smoke, built with **Three.js** and **@react-three/fiber**.
 
----
-
-## Stack
-
-| Layer          | Details                                                 |
-| -------------- | ------------------------------------------------------- |
-| Framework      | Next 15 (`app/` router)                                 |
-| Bundler (dev)  | Turbopack — automatic HMR for `.glsl`, `.vert`, `.frag` |
-| Bundler (prod) | Webpack 5 (Next default)                                |
-| 3D             | Three.js 0.177 + @react-three/fiber 9.1                 |
-| UI utils       | @react-three/drei                                       |
-| Styling        | Tailwind 4 (optional; purge enabled)                    |
-| Lint / Format  | ESLint 9, Prettier 3                                    |
-| Package        | pnpm                                                    |
+The goal is to showcase procedural animation and visual effects using fragment and vertex shaders, running on WebGL.
 
 ---
 
-## Quick start
+## 🌐 Tech Stack
 
-```bash
-pnpm i            # install
-pnpm dev          # dev server (Turbopack, port 3000)
-pnpm build        # production build (Webpack)
-pnpm start        # serve production
-```
+- [Three.js](https://threejs.org/)
+- [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber/)
+- [GLSL](https://thebookofshaders.com/)
+- [@react-three/drei](https://github.com/pmndrs/drei) (for camera and asset loading)
+- React + Next.js (App Router)
 
-> ⚠️ Requires Node ≥ 20.0.0 and pnpm ≥ 8.14.0  
-> If install fails, check `.npmrc` and your Node version.
-> Note: Turbopack only covers development; builds always use Webpack until Next ships stable support.
+---
 
-## File layout
+## ✨ Features
 
-```bash
-src/
- ├─ app/              # Next routes
- ├─ components/
- │   └─ ShaderPlane.tsx   # sample mesh + material
- ├─ shaders/
- │   ├─ sample.vert
- │   ├─ sample.frag
- │   └─ types.d.ts        # GLSL module declarations
- └─ styles/
-```
+- Procedural **fire effect** using:
+  - Vertex displacement based on Perlin noise
+  - Color gradient via distorted UVs
+  - Additive blending with transparency
 
-## How to add a shader
+- Dynamic **smoke effect** using:
+  - Vertical drift and noise-based dispersion
+  - Soft fading edges
+  - Independent shader animation
 
-1. Drop your .vert and .frag (or .glsl) into src/shaders/.
-2. Import them:
+- Imported `.glb` 3D campfire model (single instance)
 
-```bash
-import vs from '@/shaders/my.vert';
-import fs from '@/shaders/my.frag';
-```
+- Single Canvas, fully GPU-driven
 
-3. Pass them to <shaderMaterial>; React-Three-Fiber handles the rest.
-   For hot reload add:
+---
 
-```bash
-const key = vs + fs;          // forces remount on edit
-<shaderMaterial key={key} ... />
-```
+## 🧠 Shader Highlights
 
-4. If you need textures, load via useLoader(TextureLoader, 'path') and bind as uniform.
+- **Fire**:
+  - Vertex animation with height-dependent distortion
+  - Color blend from deep red to white-hot tips
+  - Shape masking for flame silhouette
 
-## Production build caveats
+- **Smoke**:
+  - Vertical upward flow
+  - Twisting effect via time-animated UV distortion
+  - Smooth edge transitions using `smoothstep`
 
-- Webpack requires the same GLSL rule (raw-loader) declared in next.config.ts.
-- Mobile WebGL 1: keep uniform counts < 128 and avoid high precision loops.
-- Alpha-blended meshes: set transparent, and consider depthWrite={false} to fix order issues.
+## 📌 Notes
 
-## License
+- Uses GLSL shaders loaded as raw strings via shaderMaterial.
+- Not optimized for instancing or batching — single showcase scene.
+- Make sure your browser supports WebGL 2.0.
 
-MIT
+## 🧪 Future Work
+
+- Compare WebGL vs WebGPU performance
+- Multi-instance rendering (grid of campfires)
+- Upgrade to three-tsl or WGSL shaders
+
+## 🛠 License
+
+MIT — use freely and credit appreciated.
